@@ -1,0 +1,41 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "blackbook"
+version = "0.1.0"
+description = "BLACKBOOK - AI IP intelligence & rights monitoring agent for film/TV studio development teams. Agentic Cinema hackathon, Parallel track."
+readme = "README.md"
+requires-python = ">=3.10"
+license = { text = "Apache-2.0" }
+authors = [{ name = "BLACKBOOK team" }]
+
+dependencies = [
+    "google-genai>=1.0",
+    "parallel-web>=0.1",
+    "pydantic>=2.0",
+    "fastapi>=0.115",
+    "uvicorn[standard]>=0.30",
+    "python-dotenv>=1.0",
+]
+
+[project.optional-dependencies]
+# ADK interactive agent mode (adds a large Google Cloud dependency tree)
+agent = [
+    "google-adk>=0.4,<2.0",
+]
+dev = [
+    "pytest>=8.0",
+    "pytest-asyncio>=0.23",
+    "httpx>=0.27",
+]
+
+[tool.setuptools.packages.find]
+where = ["."]
+include = ["agent*", "app*"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+# Windows: keep pytest's tmp_path/base temp dirs on a writable volume
+addopts = "--basetemp=C:/Users/HASSAN~1/AppData/Local/Temp/opencode/pytest-tmp"
