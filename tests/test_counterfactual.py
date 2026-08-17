@@ -69,3 +69,31 @@ def test_analyze_returns_non_empty_when_no_flip_reachable() -> None:
     scores = _scores(opportunity=95, rights_confidence=95, competition=5, production_feasibility=95)
     analysis = analyze(scores)
     assert analysis.scenarios
+
+
+def _floor_scores() -> ComponentScores:
+    """A PASS decision whose weighted total is exactly 49.5 (a rounding boundary)."""
+    return ComponentScores(
+        opportunity=70, rights_confidence=35, competition=70, production_feasibility=60
+    )
+
+
+def test_sensitivity_is_exact_across_a_rounding_boundary() -> None:
+    # Differencing two independently rounded scores reports these 3s as 4s.
+    sens = sensitivity(_floor_scores())
+    assert sens["Market opportunity"] == 3
+    assert sens["Rights confidence"] == 3
+    assert sens["Production feasibility"] == 2
+    assert sens["Competition pressure"] == 2
+
+
+def test_no_reachable_flip_yields_a_scenario_that_does_not_claim_to_flip() -> None:
+    # Already at the floor: every worsening swing stays PASS, so the fallback
+    # margin-erosion scenario must report the unchanged recommendation.
+    scores = _floor_scores()
+    current = recommend(calculate_score(scores), scores.rights_confidence)
+    assert current is Recommendation.PASS
+
+    scenarios = find_flip_scenarios(scores)
+    assert len(scenarios) == 1
+    assert scenarios[0].projected_recommendation is current

@@ -12,7 +12,13 @@ from agent.schemas import (
     CounterfactualAnalysis,
     CounterfactualScenario,
 )
-from agent.scoring import WEIGHTS, calculate_score, recommend, with_adjusted
+from agent.scoring import (
+    WEIGHTS,
+    calculate_score,
+    calculate_score_raw,
+    recommend,
+    with_adjusted,
+)
 
 COMPONENT_LABELS = {
     "opportunity": "Market opportunity",
@@ -64,12 +70,17 @@ def simulate_change(scores: ComponentScores, component: str, delta: float) -> Co
 
 
 def sensitivity(scores: ComponentScores) -> dict[str, int]:
-    """Total-score impact of a 10-point worsening swing, per component."""
-    base = calculate_score(scores)
+    """Total-score impact of a 10-point worsening swing, per component.
+
+    Measured on the unrounded weighted totals and rounded once at the end.
+    Differencing two independently rounded scores inflates the result whenever
+    they straddle a .5 boundary (a true 3-point impact would report as 4).
+    """
+    base = calculate_score_raw(scores)
     out: dict[str, int] = {}
     for component in WEIGHTS:
         adjusted = with_adjusted(scores, component, DIRECTIONS[component] * 10)
-        out[COMPONENT_LABELS[component]] = abs(base - calculate_score(adjusted))
+        out[COMPONENT_LABELS[component]] = round(abs(base - calculate_score_raw(adjusted)))
     return out
 
 

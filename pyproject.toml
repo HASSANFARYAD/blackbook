@@ -37,5 +37,3 @@ include = ["agent*", "app*"]
 
 [tool.pytest.ini_options]
 testpaths = ["tests"]
-# Windows: keep pytest's tmp_path/base temp dirs on a writable volume
-addopts = "--basetemp=C:/Users/HASSAN~1/AppData/Local/Temp/opencode/pytest-tmp"

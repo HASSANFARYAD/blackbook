@@ -8,7 +8,10 @@
     "build": "vite build",
     "preview": "vite preview",
     "test:e2e": "playwright test",
-    "test:e2e:headed": "playwright test --headed"
+    "test:e2e:headed": "playwright test --headed",
+    "screenshots": "node scripts/capture-screenshots.js",
+    "devpost:update": "node scripts/devpost-update.js",
+    "video": "node scripts/make-video.js"
   },
   "dependencies": {
     "react": "^18.3.1",

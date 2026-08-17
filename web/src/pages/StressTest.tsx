@@ -34,9 +34,14 @@ export default function StressTest() {
   if (error) return <p className="error">{error}</p>;
   if (!record || !analysis) return <p className="muted">Loading…</p>;
 
-  const passFlips = analysis.scenarios.filter(
-    (s) => s.projected_recommendation === "PASS"
+  // A scenario only counts as a flip if it moves off the *current*
+  // recommendation. When nothing flips, the engine returns a margin-erosion
+  // scenario instead, which must not be presented as a flip.
+  const flips = analysis.scenarios.filter(
+    (s) => s.projected_recommendation !== record.recommendation
   );
+  const killShot = flips.find((s) => s.projected_recommendation === "PASS");
+  const headline = killShot ?? flips[0] ?? null;
 
   return (
     <div className="page">
@@ -54,18 +59,32 @@ export default function StressTest() {
         <ScoreGauge score={record.score} recommendation={record.recommendation} />
       </section>
 
-      {passFlips.length > 0 && (
-        <section className="banner banner-flip">
-          <strong>Minimum detected flip → PASS</strong>
+      {headline ? (
+        <section className={`banner ${killShot ? "banner-flip" : ""}`}>
+          <strong>
+            Minimum detected flip → {headline.projected_recommendation}
+          </strong>
           <p>
-            The smallest plausible change that kills the recommendation:{" "}
-            <code>{passFlips[0].change}</code> (score {passFlips[0].projected_score}).
+            The smallest plausible change that moves this off{" "}
+            {record.recommendation}: <code>{headline.change}</code> (score{" "}
+            {headline.projected_score}).
+          </p>
+        </section>
+      ) : (
+        <section className="banner">
+          <strong>No reachable flip</strong>
+          <p>
+            No single-component swing moves this off {record.recommendation} —
+            it is already the floor. The scenario below shows the largest
+            remaining margin erosion instead.
           </p>
         </section>
       )}
 
       <section>
-        <h2 className="section-title">Flip scenarios</h2>
+        <h2 className="section-title">
+          {flips.length > 0 ? "Flip scenarios" : "Margin erosion"}
+        </h2>
         <p className="hint">
           Scenarios are run through the same deterministic scoring engine used for
           the original decision — no invented arithmetic.

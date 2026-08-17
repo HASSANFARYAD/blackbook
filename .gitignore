@@ -12,6 +12,7 @@ venv/
 build/
 dist/
 .pytest_cache/
+.pytest-tmp/
 .mypy_cache/
 .ruff_cache/
 
@@ -29,3 +30,13 @@ node_modules/
 web/dist/
 test-results/
 playwright-report/
+.playwright-mcp/
+
+# saved browser session state + captured screenshots (may contain login pages)
+.devpost-auth.json
+*-auth.json
+web/screenshots/
+
+# generated demo video + narration audio
+web/video/
+web/scripts

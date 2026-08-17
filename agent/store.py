@@ -4,6 +4,7 @@ from __future__ import annotations
 
 import os
 import sqlite3
+import threading
 from pathlib import Path
 
 from agent.schemas import DecisionRecord
@@ -20,6 +21,9 @@ class DecisionStore:
             self._path.parent.mkdir(parents=True, exist_ok=True)
         self._conn = sqlite3.connect(str(self._path), check_same_thread=False)
         self._conn.row_factory = sqlite3.Row
+        # The connection is shared across FastAPI's sync threadpool, so every
+        # statement is serialised here.
+        self._lock = threading.Lock()
         self._init_schema()
 
     def _init_schema(self) -> None:
@@ -40,6 +44,10 @@ class DecisionStore:
         self._conn.commit()
 
     def save(self, decision: DecisionRecord) -> None:
+        with self._lock:
+            self._save(decision)
+
+    def _save(self, decision: DecisionRecord) -> None:
         self._conn.execute(
             """
             INSERT INTO decisions (
@@ -68,15 +76,18 @@ class DecisionStore:
         self._conn.commit()
 
     def get(self, decision_id: str) -> DecisionRecord | None:
-        row = self._conn.execute(
-            "SELECT payload, status FROM decisions WHERE decision_id = ?", (decision_id,)
-        ).fetchone()
+        with self._lock:
+            row = self._conn.execute(
+                "SELECT payload, status FROM decisions WHERE decision_id = ?",
+                (decision_id,),
+            ).fetchone()
         return self._hydrate(row) if row else None
 
     def list(self) -> list[DecisionRecord]:
-        rows = self._conn.execute(
-            "SELECT payload, status FROM decisions ORDER BY created_at DESC"
-        ).fetchall()
+        with self._lock:
+            rows = self._conn.execute(
+                "SELECT payload, status FROM decisions ORDER BY created_at DESC"
+            ).fetchall()
         return [self._hydrate(row) for row in rows]
 
     @staticmethod
@@ -87,10 +98,12 @@ class DecisionStore:
         return record
 
     def update_status(self, decision_id: str, status: str) -> None:
-        self._conn.execute(
-            "UPDATE decisions SET status = ? WHERE decision_id = ?", (status, decision_id)
-        )
-        self._conn.commit()
+        with self._lock:
+            self._conn.execute(
+                "UPDATE decisions SET status = ? WHERE decision_id = ?",
+                (status, decision_id),
+            )
+            self._conn.commit()
 
     def close(self) -> None:
         self._conn.close()

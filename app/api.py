@@ -6,6 +6,7 @@ import os
 from contextlib import asynccontextmanager
 from pathlib import Path
 
+from dotenv import load_dotenv
 from fastapi import APIRouter, FastAPI, HTTPException
 from fastapi.responses import FileResponse
 from fastapi.staticfiles import StaticFiles
@@ -14,6 +15,10 @@ from pydantic import BaseModel
 from agent.pipeline import Blackbook
 from agent.schemas import CounterfactualAnalysis, DecisionRecord, WatchResult
 from agent.store import DecisionStore
+
+# Load .env before anything reads GOOGLE_API_KEY / PARALLEL_API_KEY, so the
+# README's `cp .env.example .env` flow works for the server too, not just the CLI.
+load_dotenv()
 
 
 def _web_dir() -> Path:
@@ -74,6 +79,8 @@ def evaluate(req: EvaluateRequest) -> DecisionRecord:
         return _blackbook.evaluate_ip(req.ip, create_monitor=req.create_monitor)
     except KeyError as exc:
         raise HTTPException(status_code=404, detail=str(exc))
+    except ValueError as exc:
+        raise HTTPException(status_code=400, detail=str(exc))
     except Exception as exc:
         raise HTTPException(status_code=502, detail=str(exc))
 

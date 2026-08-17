@@ -21,15 +21,19 @@ WATCH_SCORE = 55
 MIN_RIGHTS_FOR_PURSUE = 60
 
 
-def calculate_score(scores: ComponentScores) -> int:
-    """Weighted total. Competition is inverted: more competition lowers the score."""
-    raw = (
+def calculate_score_raw(scores: ComponentScores) -> float:
+    """Unrounded weighted total. Competition is inverted: more competition lowers the score."""
+    return (
         scores.opportunity * WEIGHTS["opportunity"]
         + scores.rights_confidence * WEIGHTS["rights_confidence"]
         + (100 - scores.competition) * WEIGHTS["competition"]
         + scores.production_feasibility * WEIGHTS["production_feasibility"]
     )
-    return round(raw)
+
+
+def calculate_score(scores: ComponentScores) -> int:
+    """The reported score: the weighted total, rounded to an integer."""
+    return round(calculate_score_raw(scores))
 
 
 def recommend(score: int, rights_confidence: float) -> Recommendation:

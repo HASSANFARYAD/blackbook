@@ -20,6 +20,9 @@ export default defineConfig({
     env: {
       BLACKBOOK_DB: DB_PATH,
       BLACKBOOK_SEED_DEMO: "1",
+      // The server loads .env, so blank the key explicitly: the suite asserts
+      // the missing-key error path and must not depend on the developer's .env.
+      GOOGLE_API_KEY: "",
     },
     url: `${API_BASE}/api/health`,
     reuseExistingServer: false,
