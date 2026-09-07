@@ -7,3 +7,11 @@ __pycache__
 venv
 tests
 scripts
+
+# never ship the host's install or generated artefacts into the build context
+**/node_modules
+web/dist
+web/video
+web/screenshots
+demo/output
+*.db

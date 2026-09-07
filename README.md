@@ -164,6 +164,24 @@ QA documentation lives in [`docs/qa/`](docs/qa/): the [application map](docs/qa/
 [test plan](docs/qa/test-plan.md), and a [bug report](docs/qa/bug-report.md) covering twelve
 defects found and fixed.
 
+## Deploy
+
+The demo path is fully offline against a seeded store, so a hosted instance needs no API
+keys to be usable. The image binds to `$PORT` and seeds itself on first boot.
+
+```bash
+docker build -t blackbook .
+docker run -p 8080:8080 blackbook            # http://localhost:8080
+```
+
+| Target | Notes |
+|---|---|
+| **Render** (free, no card) | `render.yaml` is a one-click blueprint. Free instances sleep after ~15 min idle and cold-start slowly. |
+| **Google Cloud Run** | `gcloud run deploy --source .` Scales to zero, fast cold start; set `GOOGLE_GENAI_USE_ENTERPRISE=true` and `GOOGLE_CLOUD_PROJECT` to route Gemini through Vertex AI. |
+
+Set `GOOGLE_API_KEY` / `PARALLEL_API_KEY` in the platform's environment to enable live
+evaluation; without them the seeded dataset still demonstrates every view.
+
 ## Demo video
 
 ```bash

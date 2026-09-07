@@ -25,7 +25,13 @@ COPY agent ./agent
 COPY app ./app
 ENV PATH=/usr/local/bin:$PATH
 
+# Seed the demo dataset on first boot so a hosted instance is never an empty
+# screen. Seeding is skipped when the store already has rows, and the whole
+# behaviour is off with -e BLACKBOOK_SEED_DEMO=0.
+ENV BLACKBOOK_SEED_DEMO=1
+
 EXPOSE 8080
 
-# Run the FastAPI app on Cloud Run (serves the SPA + API)
-CMD ["uvicorn", "app.api:app", "--host", "0.0.0.0", "--port", "8080"]
+# Shell form on purpose: Cloud Run, Render and Fly all inject the port to bind
+# through $PORT, and the exec form would treat "${PORT}" as a literal.
+CMD uvicorn app.api:app --host 0.0.0.0 --port ${PORT:-8080}

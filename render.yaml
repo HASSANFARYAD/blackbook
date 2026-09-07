@@ -1,0 +1,28 @@
+# Render blueprint for a free, no-card demo deployment.
+#
+#   Render dashboard -> New -> Blueprint -> point at this repo.
+#
+# BLACKBOOK runs its whole demo path offline against a seeded SQLite store, so it
+# needs no API keys to be judge-ready. Add GOOGLE_API_KEY / PARALLEL_API_KEY in the
+# Render dashboard later to enable live evaluation.
+services:
+  - type: web
+    name: blackbook
+    runtime: docker
+    dockerfilePath: ./Dockerfile
+    plan: free
+    healthCheckPath: /health
+    envVars:
+      # Seed the demo dataset on first boot so the hosted instance is never empty.
+      - key: BLACKBOOK_SEED_DEMO
+        value: "1"
+      # Keep the SQLite file on the writable container filesystem. It is ephemeral:
+      # a restart re-seeds from app/demo_seed.py, which is the intended behaviour
+      # for a demo instance.
+      - key: BLACKBOOK_DB
+        value: /tmp/blackbook.db
+      # Set these in the dashboard (marked sync:false so they are never committed).
+      - key: GOOGLE_API_KEY
+        sync: false
+      - key: PARALLEL_API_KEY
+        sync: false
