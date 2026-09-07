@@ -65,6 +65,16 @@ class CounterfactualRequest(BaseModel):
     decision_id: str
 
 
+def _not_found_detail(exc: KeyError) -> str:
+    """The message a KeyError was raised with, without Python's repr quoting.
+
+    `str(KeyError("decision x not found"))` is `"'decision x not found'"` -- the
+    surrounding apostrophes are part of KeyError's repr, and they were being
+    rendered to users verbatim.
+    """
+    return str(exc.args[0]) if exc.args else "not found"
+
+
 api = APIRouter(prefix="/api")
 
 
@@ -78,7 +88,7 @@ def evaluate(req: EvaluateRequest) -> DecisionRecord:
     try:
         return _blackbook.evaluate_ip(req.ip, create_monitor=req.create_monitor)
     except KeyError as exc:
-        raise HTTPException(status_code=404, detail=str(exc))
+        raise HTTPException(status_code=404, detail=_not_found_detail(exc))
     except ValueError as exc:
         raise HTTPException(status_code=400, detail=str(exc))
     except Exception as exc:
@@ -111,7 +121,7 @@ def watch(req: WatchRequest) -> WatchResult:
     try:
         return _blackbook.watch_decision(req.decision_id)
     except KeyError as exc:
-        raise HTTPException(status_code=404, detail=str(exc))
+        raise HTTPException(status_code=404, detail=_not_found_detail(exc))
     except Exception as exc:
         raise HTTPException(status_code=502, detail=str(exc))
 
@@ -121,7 +131,7 @@ def counterfactual(req: CounterfactualRequest) -> CounterfactualAnalysis:
     try:
         return _blackbook.counterfactual(req.decision_id)
     except KeyError as exc:
-        raise HTTPException(status_code=404, detail=str(exc))
+        raise HTTPException(status_code=404, detail=_not_found_detail(exc))
     except Exception as exc:
         raise HTTPException(status_code=502, detail=str(exc))
 
