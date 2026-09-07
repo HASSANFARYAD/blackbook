@@ -89,9 +89,9 @@ export default function Timeline() {
                     <span className="tl-date">{formatDay(rec.created_at)}</span>
                     {isCurrent && <span className="tag tag-current">CURRENT</span>}
                   </div>
-                  <h3>
+                  <h2>
                     {rec.recommendation} · {rec.ip}
-                  </h3>
+                  </h2>
                   <p className="muted">{rec.reasoning_summary}</p>
                   <p className="muted id-hint">{rec.decision_id}</p>
                 </article>
