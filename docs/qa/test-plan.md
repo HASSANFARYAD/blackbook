@@ -121,8 +121,8 @@ scoring engine:
 
 | IP | Score | Rec | Why it is in the fixture |
 |---|---|---|---|
-| The Expanse (v1) | 82 | PURSUE | head of the drift chain, `superseded` |
-| The Expanse (v2) | 74 | WATCH | mid-chain, `superseded` |
+| The Expanse (v1) | 81 | PURSUE | head of the drift chain, `superseded` |
+| The Expanse (v2) | 76 | WATCH | mid-chain, `superseded` |
 | The Expanse (v3) | 50 | PASS | the "no reachable flip" floor case |
 | Dune: Messiah | 86 | PURSUE | clean PURSUE, flips only to WATCH |
 | Seveneves | 62 | WATCH | reachable PASS flip |
