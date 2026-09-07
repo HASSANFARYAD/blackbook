@@ -80,7 +80,10 @@ export default function Timeline() {
                     <div className="tl-event-arrow">▼</div>
                   </div>
                 )}
-                <article className={`tl-card ${isCurrent ? "tl-card-current" : ""}`}>
+                <article
+                  data-testid="timeline-card"
+                  className={`tl-card ${isCurrent ? "tl-card-current" : ""}`}
+                >
                   <div className="tl-card-head">
                     <StatusChip rec={rec.recommendation} />
                     <span className="tl-score" style={{ color }}>

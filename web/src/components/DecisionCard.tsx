@@ -19,7 +19,7 @@ export default function DecisionCard({
 }) {
   const id = record.decision_id;
   return (
-    <article className="card">
+    <article className="card" data-testid="decision-card" data-ip={record.ip}>
       <div className="card-head">
         <h2>{record.ip}</h2>
         <div className="card-meta">

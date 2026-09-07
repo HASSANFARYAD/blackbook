@@ -67,7 +67,7 @@ export default function DecisionDetail() {
       />
 
       {selected && (
-        <aside className="evidence-panel" aria-label="Evidence detail">
+        <aside className="evidence-panel" data-testid="evidence-panel" aria-label="Evidence detail">
           <div className="evidence-panel-head">
             <h2>Evidence — {selected.label}</h2>
             <button

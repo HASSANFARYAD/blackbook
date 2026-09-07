@@ -1,0 +1,14 @@
+{
+  "name": "blackbook-demo",
+  "private": true,
+  "version": "0.1.0",
+  "description": "Demo recording pipeline for BLACKBOOK. The application itself lives in web/ (SPA) and agent/ + app/ (Python).",
+  "scripts": {
+    "demo": "node demo/build.mjs",
+    "demo:dry-run": "node demo/build.mjs --dry-run",
+    "demo:record": "node demo/build.mjs --skip-gates"
+  },
+  "devDependencies": {
+    "@playwright/test": "^1.62.1"
+  }
+}

@@ -40,3 +40,11 @@ web/screenshots/
 # generated demo video + narration audio
 web/video/
 web/scripts
+
+# demo build artefacts (the cut itself is uploaded, not committed);
+# scenes.json and demo.srt ARE tracked -- they are deliverables
+demo/output/*.mp4
+demo/output/audio/
+demo/output/raw/
+demo/output/audio-durations.json
+demo/output/scenes.dryrun.json

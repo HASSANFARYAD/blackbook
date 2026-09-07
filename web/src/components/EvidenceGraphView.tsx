@@ -81,7 +81,7 @@ export default function EvidenceGraphView({
     // The scroll container is sized by the layout; only the inner canvas takes
     // the computed graph width, so a wide graph pans inside its own box instead
     // of forcing the whole document to scroll sideways.
-    <div className="graph-wrap">
+    <div className="graph-wrap" data-testid="evidence-graph">
       <div className="graph-canvas" style={{ width, height }}>
       <svg
         className="graph-svg"

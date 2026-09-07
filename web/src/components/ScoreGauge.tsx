@@ -36,10 +36,10 @@ export default function ScoreGauge({
         />
       </svg>
       <div className="gauge-center">
-        <div className="gauge-score" style={{ color }}>
+        <div className="gauge-score" data-testid="score-value" style={{ color }}>
           {score}
         </div>
-        <div className="gauge-rec">{recommendation}</div>
+        <div className="gauge-rec" data-testid="recommendation">{recommendation}</div>
       </div>
     </div>
   );

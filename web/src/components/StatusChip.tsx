@@ -10,6 +10,7 @@ export default function StatusChip({
 }) {
   return (
     <span
+      data-testid="rec-chip"
       className={`chip ${big ? "chip-big" : ""}`}
       style={{ color: recColor(rec), borderColor: recColor(rec) }}
     >

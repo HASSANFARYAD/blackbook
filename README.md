@@ -149,10 +149,35 @@ The service defaults to API-key auth; setting `GOOGLE_GENAI_USE_ENTERPRISE=true`
 ## Tests
 
 ```bash
-pytest
+pytest                          # 37 unit + integration tests
+cd web && npx playwright test   # 63 end-to-end tests
 ```
 
-All tests are offline - they exercise schemas, decision memory, deterministic scoring, counterfactual simulation, and pipeline guards without calling APIs.
+Every test is offline. `pytest` exercises schemas, decision memory, deterministic scoring,
+counterfactual simulation and pipeline guards without calling APIs. The Playwright suite boots its
+own uvicorn against a throwaway seeded database with `GOOGLE_API_KEY` blanked, so it never depends
+on a developer's `.env`, and covers the API contract, untrusted-evidence rendering, error and empty
+states, responsive layout at four viewports, accessibility (names, AA contrast, heading order,
+keyboard traversal), console cleanliness and performance.
+
+QA documentation lives in [`docs/qa/`](docs/qa/): the [application map](docs/qa/app-map.md), the
+[test plan](docs/qa/test-plan.md), and a [bug report](docs/qa/bug-report.md) covering twelve
+defects found and fixed.
+
+## Demo video
+
+```bash
+npm install                     # once, for the recorder
+node demo/build.mjs --dry-run   # pre-recording gate: suites + two identical dry passes
+node demo/build.mjs             # narrate, record, mux, subtitle
+node demo/verify.mjs            # check the finished cut
+```
+
+Captured natively at 1920x1080 from a seeded, fully offline instance, so the run is repeatable.
+Scene boundaries are measured at runtime into `demo/output/scenes.json`, which drives both the
+audio mux and the `.srt` — the picture is never retimed to fit the narration. The script is in
+[`docs/demo/narration.md`](docs/demo/narration.md) and the shot list in
+[`docs/demo/storyboard.md`](docs/demo/storyboard.md).
 
 ## Note
 

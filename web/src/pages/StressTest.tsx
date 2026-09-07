@@ -75,7 +75,7 @@ export default function StressTest() {
       </section>
 
       {headline ? (
-        <section className={`banner ${killShot ? "banner-flip" : ""}`}>
+        <section data-testid="flip-banner" className={`banner ${killShot ? "banner-flip" : ""}`}>
           <strong>
             Minimum detected flip → {headline.projected_recommendation}
           </strong>
@@ -86,7 +86,7 @@ export default function StressTest() {
           </p>
         </section>
       ) : (
-        <section className="banner">
+        <section data-testid="flip-banner" className="banner">
           <strong>No reachable flip</strong>
           <p>
             No single-component swing moves this off {record.recommendation} —
