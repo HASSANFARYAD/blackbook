@@ -7,8 +7,8 @@ from contextlib import asynccontextmanager
 from pathlib import Path
 
 from dotenv import load_dotenv
-from fastapi import APIRouter, FastAPI, HTTPException
-from fastapi.responses import FileResponse
+from fastapi import APIRouter, FastAPI, HTTPException, Request, Response
+from fastapi.responses import FileResponse, JSONResponse
 from fastapi.staticfiles import StaticFiles
 from pydantic import BaseModel
 
@@ -135,9 +135,7 @@ def infra_health() -> dict:
     return {"status": "ok"}
 
 
-@app.get("/{full_path:path}", include_in_schema=False)
-def spa_fallback(full_path: str) -> FileResponse:
-    """Serve the built SPA for any non-API route (client-side routing)."""
+def _spa_index() -> FileResponse:
     index = _web_dir() / "index.html"
     if not index.is_file():
         raise HTTPException(
@@ -145,3 +143,25 @@ def spa_fallback(full_path: str) -> FileResponse:
             detail="Web UI not built. Run `npm run build` in web/ first.",
         )
     return FileResponse(index)
+
+
+@app.get("/", include_in_schema=False)
+def spa_root() -> FileResponse:
+    return _spa_index()
+
+
+@app.exception_handler(404)
+async def spa_fallback(request: Request, exc: HTTPException) -> Response:
+    """Serve the SPA for unmatched *UI* routes, and a JSON 404 for unmatched API routes.
+
+    Deliberately an exception handler rather than a `/{path:path}` catch-all route:
+    a catch-all fully matches `/api/...` too, so it shadowed the API surface --
+    unknown endpoints answered `200 text/html` and a wrong method never reached
+    Starlette's 405 handling. With no route to shadow them, both now behave.
+    """
+    if request.url.path.startswith("/api"):
+        return JSONResponse({"detail": exc.detail}, status_code=404)
+    try:
+        return _spa_index()
+    except HTTPException as missing:
+        return JSONResponse({"detail": missing.detail}, status_code=missing.status_code)
