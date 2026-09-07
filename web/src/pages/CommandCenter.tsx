@@ -3,6 +3,7 @@ import type { FormEvent } from "react";
 import { api } from "../api";
 import type { DecisionRecord } from "../types";
 import DecisionCard from "../components/DecisionCard";
+import { errorMessage } from "../format";
 
 export default function CommandCenter() {
   const [decisions, setDecisions] = useState<DecisionRecord[]>([]);
@@ -18,7 +19,7 @@ export default function CommandCenter() {
       setDecisions(await api.decisions());
       setError(null);
     } catch (e) {
-      setError(String(e));
+      setError(errorMessage(e));
     } finally {
       setLoading(false);
     }
@@ -42,7 +43,7 @@ export default function CommandCenter() {
       setIp("");
       await refresh();
     } catch (err) {
-      setError(String(err));
+      setError(errorMessage(err));
     } finally {
       setBusy(false);
     }
@@ -66,7 +67,7 @@ export default function CommandCenter() {
       }
       await refresh();
     } catch (err) {
-      setError(String(err));
+      setError(errorMessage(err));
     } finally {
       setWatchBusyId(null);
     }

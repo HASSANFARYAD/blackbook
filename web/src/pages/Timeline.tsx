@@ -2,8 +2,9 @@ import { useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
 import { api } from "../api";
 import type { DecisionRecord } from "../types";
+import ErrorState from "../components/ErrorState";
 import StatusChip from "../components/StatusChip";
-import { formatDay, recColor } from "../format";
+import { errorMessage, formatDay, recColor } from "../format";
 
 function eventNodes(record: DecisionRecord) {
   return record.evidence.nodes.filter((n) => n.entity_type === "event");
@@ -21,10 +22,10 @@ export default function Timeline() {
     api
       .lineage(id)
       .then(setLineage)
-      .catch((e) => setError(String(e)));
+      .catch((e) => setError(errorMessage(e)));
   }, [id]);
 
-  if (error) return <p className="error">{error}</p>;
+  if (error) return <ErrorState message={error} />;
   if (lineage.length === 0) return <p className="muted">Loading…</p>;
 
   return (

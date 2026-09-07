@@ -6,8 +6,10 @@ import type {
   CounterfactualScenario,
   DecisionRecord,
 } from "../types";
+import ErrorState from "../components/ErrorState";
 import StatusChip from "../components/StatusChip";
 import ScoreGauge from "../components/ScoreGauge";
+import { errorMessage } from "../format";
 
 const COMPONENT_LABELS: Record<string, string> = {
   opportunity: "Opportunity",
@@ -32,10 +34,10 @@ export default function StressTest() {
         setRecord(rec);
         setAnalysis(cf);
       })
-      .catch((e) => setError(String(e)));
+      .catch((e) => setError(errorMessage(e)));
   }, [id]);
 
-  if (error) return <p className="error">{error}</p>;
+  if (error) return <ErrorState message={error} />;
   if (!record || !analysis) return <p className="muted">Loading…</p>;
 
   // A scenario only counts as a flip if it moves off the *current*

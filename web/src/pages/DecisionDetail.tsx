@@ -2,10 +2,11 @@ import { useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
 import { api } from "../api";
 import type { DecisionRecord, EvidenceNode } from "../types";
+import ErrorState from "../components/ErrorState";
 import ScoreGauge from "../components/ScoreGauge";
 import ComponentBars from "../components/ComponentBars";
 import EvidenceGraphView from "../components/EvidenceGraphView";
-import { formatDate, humanize } from "../format";
+import { errorMessage, formatDate, humanize } from "../format";
 
 export default function DecisionDetail() {
   const { id } = useParams<{ id: string }>();
@@ -21,10 +22,10 @@ export default function DecisionDetail() {
     api
       .decision(id)
       .then(setRecord)
-      .catch((e) => setError(String(e)));
+      .catch((e) => setError(errorMessage(e)));
   }, [id]);
 
-  if (error) return <p className="error">{error}</p>;
+  if (error) return <ErrorState message={error} />;
   if (!record) return <p className="muted">Loading…</p>;
 
   return (

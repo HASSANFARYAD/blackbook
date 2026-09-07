@@ -40,3 +40,21 @@ export function recColor(rec: Recommendation): string {
 export function humanize(s: string): string {
   return s.replace(/_/g, " ").replace(/\b\w/g, (c) => c.toUpperCase());
 }
+
+/**
+ * A message fit to show a user.
+ *
+ * `String(err)` on a rejected fetch yields "TypeError: Failed to fetch" and on an
+ * API error yields "Error: <detail>" — the JS class name is noise at best and
+ * misleading at worst, so strip it and translate the one failure mode that has
+ * no server-side detail to report.
+ */
+export function errorMessage(err: unknown): string {
+  if (err instanceof TypeError) {
+    return "Could not reach the BLACKBOOK service. Check that it is running, then try again.";
+  }
+  const raw = err instanceof Error ? err.message : String(err);
+  const cleaned = raw.replace(/^(?:[A-Za-z]*Error):\s*/, "").trim();
+  if (!cleaned) return "Something went wrong. Please try again.";
+  return cleaned.charAt(0).toUpperCase() + cleaned.slice(1);
+}
