@@ -58,3 +58,22 @@ export function errorMessage(err: unknown): string {
   if (!cleaned) return "Something went wrong. Please try again.";
   return cleaned.charAt(0).toUpperCase() + cleaned.slice(1);
 }
+
+/**
+ * An evidence `source_url` safe to put in an href, or null.
+ *
+ * Evidence is LLM-extracted from third-party pages, so the scheme is untrusted
+ * input. Only http(s) becomes a link; anything else (javascript:, data:,
+ * vbscript:, a relative path) is shown as plain text instead.
+ */
+export function safeHref(url?: string | null): string | null {
+  if (!url) return null;
+  try {
+    const parsed = new URL(url, window.location.origin);
+    return parsed.protocol === "http:" || parsed.protocol === "https:"
+      ? parsed.href
+      : null;
+  } catch {
+    return null;
+  }
+}

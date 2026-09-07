@@ -6,13 +6,23 @@ import ErrorState from "../components/ErrorState";
 import ScoreGauge from "../components/ScoreGauge";
 import ComponentBars from "../components/ComponentBars";
 import EvidenceGraphView from "../components/EvidenceGraphView";
-import { errorMessage, formatDate, humanize } from "../format";
+import { errorMessage, formatDate, humanize, safeHref } from "../format";
 
 export default function DecisionDetail() {
   const { id } = useParams<{ id: string }>();
   const [record, setRecord] = useState<DecisionRecord | null>(null);
   const [selected, setSelected] = useState<EvidenceNode | null>(null);
   const [error, setError] = useState<string | null>(null);
+
+  // Escape dismisses the provenance panel; without it the panel could only ever
+  // be swapped for another node's, never closed.
+  useEffect(() => {
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === "Escape") setSelected(null);
+    };
+    window.addEventListener("keydown", onKey);
+    return () => window.removeEventListener("keydown", onKey);
+  }, []);
 
   useEffect(() => {
     if (!id) return;
@@ -57,19 +67,34 @@ export default function DecisionDetail() {
       />
 
       {selected && (
-        <aside className="evidence-panel">
-          <h3>Evidence — {selected.label}</h3>
+        <aside className="evidence-panel" aria-label="Evidence detail">
+          <div className="evidence-panel-head">
+            <h2>Evidence — {selected.label}</h2>
+            <button
+              type="button"
+              className="btn btn-icon"
+              aria-label="Close evidence"
+              onClick={() => setSelected(null)}
+            >
+              ×
+            </button>
+          </div>
           <dl>
             <dt>Entity</dt>
             <dd>{humanize(selected.entity_type)}</dd>
             <dt>Source</dt>
             <dd>
-              {selected.source_url ? (
-                <a href={selected.source_url} target="_blank" rel="noreferrer">
+              {safeHref(selected.source_url) ? (
+                <a
+                  href={safeHref(selected.source_url)!}
+                  target="_blank"
+                  rel="noreferrer"
+                >
                   {selected.source_title || selected.source_url}
                 </a>
               ) : (
-                selected.source || "—"
+                // Provenance is still shown, just not as a clickable link.
+                selected.source_title || selected.source_url || selected.source || "—"
               )}
             </dd>
             <dt>Published</dt>
