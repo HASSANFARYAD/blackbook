@@ -20,7 +20,7 @@ export default function ComponentBars({
   scores: ComponentScores;
 }) {
   return (
-    <div className="component-bars">
+    <div className="component-bars" data-testid="component-bars">
       {COMPONENTS.map(({ key, label }) => (
         <div key={key} className="component-row">
           <span className="component-label">{label}</span>

@@ -1,0 +1,155 @@
+1
+00:00:00,328 --> 00:00:06,439
+A studio development team decides whether to
+chase a book, a comic, or a format.
+
+2
+00:00:06,499 --> 00:00:08,497
+Those calls are worth millions,
+
+3
+00:00:08,557 --> 00:00:13,434
+and the research behind them sits in trade
+articles and someone's memory.
+
+4
+00:00:13,494 --> 00:00:17,549
+BLACKBOOK researches an intellectual property,
+makes the call, records why,
+
+5
+00:00:17,609 --> 00:00:21,664
+and watches for the moment that call stops
+being right.
+
+6
+00:00:22,147 --> 00:00:25,909
+Every decision the system has ever made is
+here.
+
+7
+00:00:25,969 --> 00:00:33,131
+Each one carries a recommendation — pursue,
+watch, or pass — a score out of a hundred,
+
+8
+00:00:33,191 --> 00:00:37,803
+and the four components underneath it: market
+opportunity, rights confidence, competition,
+
+9
+00:00:37,863 --> 00:00:39,078
+and production feasibility.
+
+10
+00:00:39,554 --> 00:00:43,333
+Gemini scores those four components and
+explains its reasoning.
+
+11
+00:00:43,393 --> 00:00:45,893
+It never picks the final number.
+
+12
+00:00:45,953 --> 00:00:53,146
+A fixed weighted function in our own code
+turns those components into the score and the recommendation.
+
+13
+00:00:53,206 --> 00:00:55,706
+The model explains; the system decides.
+
+14
+00:00:55,766 --> 00:00:59,119
+The same inputs always produce the same
+decision.
+
+15
+00:00:59,605 --> 00:01:02,254
+Behind every decision is an evidence graph.
+
+16
+00:01:02,314 --> 00:01:08,833
+Each claim is a node with a typed relationship
+to another, not a paragraph of summary text.
+
+17
+00:01:09,324 --> 00:01:15,235
+Open any node and you get the source, when it
+was published, when we observed it,
+
+18
+00:01:15,295 --> 00:01:19,341
+a confidence level, and the exact sentence the
+claim came from.
+
+19
+00:01:19,401 --> 00:01:21,581
+Nothing in a decision is unattributed.
+
+20
+00:01:22,062 --> 00:01:26,826
+The stress test asks what would have to change
+for this call to flip.
+
+21
+00:01:26,886 --> 00:01:30,962
+Every scenario runs through the same scoring
+function as the real decision,
+
+22
+00:01:31,022 --> 00:01:34,408
+so these numbers are exactly what the engine
+would produce.
+
+23
+00:01:34,468 --> 00:01:39,923
+The smallest change that moves this off pursue
+is a thirty point drop in market opportunity.
+
+24
+00:01:40,398 --> 00:01:44,035
+When nothing can flip a recommendation, the
+system says so.
+
+25
+00:01:44,095 --> 00:01:49,951
+It reports how much margin is left instead of
+inventing a change that does not exist.
+
+26
+00:01:50,425 --> 00:01:52,532
+Decisions do not stay correct.
+
+27
+00:01:52,592 --> 00:01:57,302
+A Parallel monitor watches the web for events
+touching this property.
+
+28
+00:01:57,362 --> 00:02:03,372
+Each event carries its own provenance, is
+de-duplicated so one story never fires twice,
+
+29
+00:02:03,432 --> 00:02:06,841
+and is tested for materiality before anything
+changes.
+
+30
+00:02:07,319 --> 00:02:10,847
+The result is a decision that keeps a memory.
+
+31
+00:02:10,907 --> 00:02:16,030
+This property went from pursue, to watch when
+a competing adaptation was announced,
+
+32
+00:02:16,090 --> 00:02:18,821
+to pass when the rights were sold.
+
+33
+00:02:18,881 --> 00:02:22,011
+Three linked revisions, every one evidenced
+and explained.

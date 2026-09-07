@@ -1,0 +1,53 @@
+{
+  "voice": "Microsoft Zira Desktop",
+  "rate": 0,
+  "sceneGapSeconds": 0.8,
+  "maxTotalSeconds": 175,
+  "scenes": [
+    {
+      "id": "01-intro",
+      "feature": "Problem framing",
+      "text": "A studio development team decides whether to chase a book, a comic, or a format. Those calls are worth millions, and the research behind them sits in trade articles and someone's memory. BLACKBOOK researches an intellectual property, makes the call, records why, and watches for the moment that call stops being right."
+    },
+    {
+      "id": "02-command-center",
+      "feature": "Decision Command Center",
+      "text": "Every decision the system has ever made is here. Each one carries a recommendation — pursue, watch, or pass — a score out of a hundred, and the four components underneath it: market opportunity, rights confidence, competition, and production feasibility."
+    },
+    {
+      "id": "03-deterministic",
+      "feature": "Deterministic decision engine",
+      "text": "Gemini scores those four components and explains its reasoning. It never picks the final number. A fixed weighted function in our own code turns those components into the score and the recommendation. The model explains; the system decides. The same inputs always produce the same decision."
+    },
+    {
+      "id": "04-evidence",
+      "feature": "Evidence graph",
+      "text": "Behind every decision is an evidence graph. Each claim is a node with a typed relationship to another, not a paragraph of summary text."
+    },
+    {
+      "id": "05-evidence-node",
+      "feature": "Provenance panel",
+      "text": "Open any node and you get the source, when it was published, when we observed it, a confidence level, and the exact sentence the claim came from. Nothing in a decision is unattributed."
+    },
+    {
+      "id": "06-counterfactual",
+      "feature": "Counterfactual stress test",
+      "text": "The stress test asks what would have to change for this call to flip. Every scenario runs through the same scoring function as the real decision, so these numbers are exactly what the engine would produce. The smallest change that moves this off pursue is a thirty point drop in market opportunity."
+    },
+    {
+      "id": "07-floor",
+      "feature": "No reachable flip",
+      "text": "When nothing can flip a recommendation, the system says so. It reports how much margin is left instead of inventing a change that does not exist."
+    },
+    {
+      "id": "08-drift",
+      "feature": "Decision drift monitoring",
+      "text": "Decisions do not stay correct. A Parallel monitor watches the web for events touching this property. Each event carries its own provenance, is de-duplicated so one story never fires twice, and is tested for materiality before anything changes."
+    },
+    {
+      "id": "09-close",
+      "feature": "Decision timeline",
+      "text": "The result is a decision that keeps a memory. This property went from pursue, to watch when a competing adaptation was announced, to pass when the rights were sold. Three linked revisions, every one evidenced and explained."
+    }
+  ]
+}

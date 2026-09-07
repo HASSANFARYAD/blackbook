@@ -1,0 +1,82 @@
+{
+  "recordedAt": "2026-09-07T12:00:22.318Z",
+  "video": "demo/output/demo.mp4",
+  "subtitles": "demo/output/demo.srt",
+  "resolution": "1920x1080",
+  "fps": 30,
+  "durationSeconds": 142.366667,
+  "scenes": [
+    {
+      "id": "01-intro",
+      "feature": "Problem framing",
+      "startMs": 0,
+      "narrationStartMs": 328,
+      "endMs": 22129,
+      "narrationSeconds": 21.396
+    },
+    {
+      "id": "02-command-center",
+      "feature": "Decision Command Center",
+      "startMs": 22130,
+      "narrationStartMs": 22147,
+      "endMs": 39549,
+      "narrationSeconds": 16.991
+    },
+    {
+      "id": "03-deterministic",
+      "feature": "Deterministic decision engine",
+      "startMs": 39549,
+      "narrationStartMs": 39554,
+      "endMs": 59603,
+      "narrationSeconds": 19.626
+    },
+    {
+      "id": "04-evidence",
+      "feature": "Evidence graph",
+      "startMs": 59603,
+      "narrationStartMs": 59605,
+      "endMs": 69319,
+      "narrationSeconds": 9.288
+    },
+    {
+      "id": "05-evidence-node",
+      "feature": "Provenance panel",
+      "startMs": 69319,
+      "narrationStartMs": 69324,
+      "endMs": 82060,
+      "narrationSeconds": 12.317
+    },
+    {
+      "id": "06-counterfactual",
+      "feature": "Counterfactual stress test",
+      "startMs": 82060,
+      "narrationStartMs": 82062,
+      "endMs": 100396,
+      "narrationSeconds": 17.921
+    },
+    {
+      "id": "07-floor",
+      "feature": "No reachable flip",
+      "startMs": 100396,
+      "narrationStartMs": 100398,
+      "endMs": 110422,
+      "narrationSeconds": 9.613
+    },
+    {
+      "id": "08-drift",
+      "feature": "Decision drift monitoring",
+      "startMs": 110422,
+      "narrationStartMs": 110425,
+      "endMs": 127314,
+      "narrationSeconds": 16.476
+    },
+    {
+      "id": "09-close",
+      "feature": "Decision timeline",
+      "startMs": 127314,
+      "narrationStartMs": 127319,
+      "endMs": 142490,
+      "narrationSeconds": 14.752
+    }
+  ]
+}
