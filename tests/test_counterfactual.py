@@ -1,3 +1,5 @@
+import re
+
 from agent.counterfactual import (
     analyze,
     find_flip_scenarios,
@@ -97,3 +99,52 @@ def test_no_reachable_flip_yields_a_scenario_that_does_not_claim_to_flip() -> No
     scenarios = find_flip_scenarios(scores)
     assert len(scenarios) == 1
     assert scenarios[0].projected_recommendation is current
+
+
+def test_flip_scenarios_are_ordered_smallest_swing_first():
+    """Regression for BUG-03.
+
+    The UI presents the first flip scenario as "the smallest plausible change".
+    Scenarios used to come back in the order the components are declared in, so a
+    40-point opportunity swing was announced as the smallest change even though a
+    10-point rights slip flipped the same decision.
+    """
+    scores = ComponentScores(
+        opportunity=100, rights_confidence=62, competition=0, production_feasibility=100
+    )
+    assert recommend(calculate_score(scores), scores.rights_confidence) is Recommendation.PURSUE
+
+    scenarios = find_flip_scenarios(scores)
+    magnitudes = [abs(int(re.search(r"([+-]\d+) points", s.change).group(1))) for s in scenarios]
+
+    assert magnitudes == sorted(magnitudes), magnitudes
+    assert scenarios[0].change.startswith("Rights confidence -10")
+    # Every returned scenario really is a flip.
+    for scenario in scenarios:
+        assert scenario.projected_recommendation is not Recommendation.PURSUE
+
+
+def test_smallest_flip_wins_even_when_a_larger_swing_is_more_severe():
+    """A bigger swing landing on PASS must not outrank a smaller swing landing on WATCH."""
+    scores = ComponentScores(
+        opportunity=100, rights_confidence=62, competition=0, production_feasibility=100
+    )
+    scenarios = find_flip_scenarios(scores)
+    first_magnitude = abs(int(re.search(r"([+-]\d+) points", scenarios[0].change).group(1)))
+    for scenario in scenarios[1:]:
+        other = abs(int(re.search(r"([+-]\d+) points", scenario.change).group(1)))
+        assert first_magnitude <= other
+
+
+def test_ties_keep_a_stable_declared_order():
+    """Seveneves-shaped scores: several components flip at the same magnitude."""
+    scores = ComponentScores(
+        opportunity=75, rights_confidence=55, competition=45, production_feasibility=60
+    )
+    changes = [s.change for s in find_flip_scenarios(scores)]
+    assert changes == [
+        "Market opportunity -30 points",
+        "Rights confidence -30 points",
+        "Production feasibility -40 points",
+        "Competition pressure +40 points",
+    ]

@@ -83,6 +83,8 @@ export interface WatchResult {
 
 export interface CounterfactualScenario {
   change: string;
+  /** Signed size of the swing, used to rank scenarios by how small a change they are. */
+  delta: number;
   projected_score: number;
   projected_recommendation: Recommendation;
   explanation: string;

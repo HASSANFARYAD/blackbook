@@ -1,7 +1,11 @@
 import { useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
 import { api } from "../api";
-import type { CounterfactualAnalysis, DecisionRecord } from "../types";
+import type {
+  CounterfactualAnalysis,
+  CounterfactualScenario,
+  DecisionRecord,
+} from "../types";
 import StatusChip from "../components/StatusChip";
 import ScoreGauge from "../components/ScoreGauge";
 
@@ -37,11 +41,20 @@ export default function StressTest() {
   // A scenario only counts as a flip if it moves off the *current*
   // recommendation. When nothing flips, the engine returns a margin-erosion
   // scenario instead, which must not be presented as a flip.
-  const flips = analysis.scenarios.filter(
+  //
+  // Smallest swing first, ranked from the scenario's own delta rather than from
+  // the order the API returned: the banner claims to show the *smallest* change
+  // that flips the call, so that claim must not depend on response ordering.
+  const bySmallestSwing = (a: CounterfactualScenario, b: CounterfactualScenario) =>
+    Math.abs(a.delta) - Math.abs(b.delta);
+  const scenarios = [...analysis.scenarios].sort(bySmallestSwing);
+  const flips = scenarios.filter(
     (s) => s.projected_recommendation !== record.recommendation
   );
-  const killShot = flips.find((s) => s.projected_recommendation === "PASS");
-  const headline = killShot ?? flips[0] ?? null;
+  // Previously this preferred any scenario landing on PASS, which contradicted
+  // the banner's own wording whenever a smaller swing flipped it to WATCH.
+  const headline = flips[0] ?? null;
+  const killShot = headline?.projected_recommendation === "PASS";
 
   return (
     <div className="page">
@@ -90,7 +103,7 @@ export default function StressTest() {
           the original decision — no invented arithmetic.
         </p>
         <div className="scenario-list">
-          {analysis.scenarios.map((s, i) => {
+          {scenarios.map((s, i) => {
             const flipped = s.projected_recommendation !== record.recommendation;
             return (
               <article key={i} className={`scenario ${flipped ? "scenario-flip" : ""}`}>

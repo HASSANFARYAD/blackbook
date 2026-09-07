@@ -179,6 +179,9 @@ class WatchResult(BaseModel):
 
 class CounterfactualScenario(BaseModel):
     change: str
+    # The signed size of the swing, so consumers can rank scenarios by how small
+    # a change they represent without parsing it back out of `change`.
+    delta: float
     projected_score: int = Field(ge=0, le=100)
     projected_recommendation: Recommendation
     explanation: str

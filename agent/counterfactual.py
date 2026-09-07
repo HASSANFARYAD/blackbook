@@ -60,6 +60,7 @@ def simulate_change(scores: ComponentScores, component: str, delta: float) -> Co
     trigger = TRIGGERS[component]
     return CounterfactualScenario(
         change=f"{label} {delta:+g} points",
+        delta=delta,
         projected_score=projected,
         projected_recommendation=new_rec,
         explanation=(
@@ -85,15 +86,25 @@ def sensitivity(scores: ComponentScores) -> dict[str, int]:
 
 
 def find_flip_scenarios(scores: ComponentScores) -> list[CounterfactualScenario]:
+    """Per component, the smallest swing that flips the recommendation.
+
+    Returned smallest-swing-first. The UI presents the head of this list as "the
+    smallest plausible change that moves this off X", so the order has to reflect
+    magnitude rather than the order the components happen to be declared in --
+    otherwise a 40-point opportunity swing gets announced as the smallest change
+    while a 10-point rights slip that also flips it sits further down the list.
+    """
     current = _current(scores)
-    scenarios: list[CounterfactualScenario] = []
+    found: list[tuple[int, CounterfactualScenario]] = []
     for component in DIRECTIONS:
         sign = DIRECTIONS[component]
         for magnitude in range(STEP, MAX_SWING + 1, STEP):
             scenario = simulate_change(scores, component, sign * magnitude)
             if scenario.projected_recommendation != current:
-                scenarios.append(scenario)
+                found.append((magnitude, scenario))
                 break
+    # Stable sort: components tying on magnitude keep their declared order.
+    scenarios = [scenario for _, scenario in sorted(found, key=lambda pair: pair[0])]
     if not scenarios:
         # No reachable flip: surface the material margin erosion instead.
         sens = sensitivity(scores)
