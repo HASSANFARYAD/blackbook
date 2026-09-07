@@ -66,8 +66,23 @@ export default function EvidenceGraphView({
     return { positions: pos, width, height };
   }, [graph]);
 
+  if (graph.nodes.length === 0) {
+    return (
+      <div className="graph-wrap">
+        <p className="graph-empty">
+          No evidence recorded for this decision yet. Evidence nodes appear here
+          once research or a drift check has run.
+        </p>
+      </div>
+    );
+  }
+
   return (
-    <div className="graph-wrap" style={{ width, height }}>
+    // The scroll container is sized by the layout; only the inner canvas takes
+    // the computed graph width, so a wide graph pans inside its own box instead
+    // of forcing the whole document to scroll sideways.
+    <div className="graph-wrap">
+      <div className="graph-canvas" style={{ width, height }}>
       <svg
         className="graph-svg"
         viewBox={`0 0 ${width} ${height}`}
@@ -130,6 +145,7 @@ export default function EvidenceGraphView({
           </button>
         );
       })}
+      </div>
     </div>
   );
 }

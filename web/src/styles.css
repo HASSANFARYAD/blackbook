@@ -66,7 +66,7 @@ a:hover {
 .tagline {
   color: var(--muted);
   letter-spacing: 2px;
-  font-size: 11px;
+  font-size: 14px;
 }
 
 .content {
@@ -80,8 +80,8 @@ a:hover {
 .foot {
   text-align: center;
   color: var(--muted);
-  font-size: 12px;
-  padding: 18px;
+  font-size: 14px;
+  padding: 20px;
   border-top: 1px solid var(--line);
   letter-spacing: 1px;
 }
@@ -99,12 +99,12 @@ h1 {
 }
 
 h2 {
-  margin: 0 0 10px;
+  margin: 0 0 12px;
   font-size: 18px;
 }
 
 h3 {
-  margin: 0 0 6px;
+  margin: 0 0 8px;
   font-size: 15px;
 }
 
@@ -118,7 +118,7 @@ h3 {
   background: rgba(239, 68, 68, 0.12);
   border: 1px solid rgba(239, 68, 68, 0.4);
   border-radius: 8px;
-  padding: 10px 14px;
+  padding: 12px 16px;
   margin: 0;
 }
 
@@ -127,7 +127,7 @@ h3 {
   background: rgba(34, 197, 94, 0.1);
   border: 1px solid rgba(34, 197, 94, 0.4);
   border-radius: 8px;
-  padding: 10px 14px;
+  padding: 12px 16px;
   margin: 0;
 }
 
@@ -152,7 +152,7 @@ h3 {
 
 .evaluate-form {
   display: flex;
-  gap: 10px;
+  gap: 12px;
   margin-top: 4px;
 }
 
@@ -162,7 +162,7 @@ h3 {
   border: 1px solid var(--line);
   color: var(--text);
   border-radius: 8px;
-  padding: 12px 14px;
+  padding: 12px 16px;
   font-size: 15px;
 }
 
@@ -177,8 +177,8 @@ h3 {
   color: var(--text);
   border: 1px solid var(--line);
   border-radius: 8px;
-  padding: 9px 16px;
-  font-size: 13px;
+  padding: 8px 16px;
+  font-size: 14px;
   font-weight: 600;
   cursor: pointer;
   letter-spacing: 0.3px;
@@ -201,7 +201,7 @@ h3 {
 }
 
 .section-title {
-  font-size: 13px;
+  font-size: 14px;
   text-transform: uppercase;
   letter-spacing: 2px;
   color: var(--muted);
@@ -210,17 +210,17 @@ h3 {
 .grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
-  gap: 18px;
+  gap: 20px;
 }
 
 .card {
   background: var(--panel);
   border: 1px solid var(--line);
   border-radius: var(--radius);
-  padding: 18px;
+  padding: 20px;
   display: flex;
   flex-direction: column;
-  gap: 14px;
+  gap: 16px;
 }
 
 .card-head {
@@ -240,7 +240,7 @@ h3 {
   flex-direction: column;
   align-items: flex-end;
   gap: 4px;
-  font-size: 12px;
+  font-size: 14px;
 }
 
 .tag {
@@ -248,8 +248,8 @@ h3 {
   border: 1px solid var(--line);
   color: var(--muted);
   border-radius: 999px;
-  padding: 2px 9px;
-  font-size: 11px;
+  padding: 4px 8px;
+  font-size: 14px;
   text-transform: uppercase;
   letter-spacing: 0.8px;
 }
@@ -297,7 +297,7 @@ h3 {
 }
 
 .gauge-rec {
-  font-size: 10px;
+  font-size: 14px;
   letter-spacing: 1.5px;
   color: var(--muted);
   margin-top: 4px;
@@ -314,7 +314,7 @@ h3 {
   display: flex;
   align-items: center;
   gap: 8px;
-  font-size: 12px;
+  font-size: 14px;
 }
 
 .component-label {
@@ -348,8 +348,8 @@ h3 {
   display: inline-block;
   border: 1px solid;
   border-radius: 999px;
-  padding: 2px 12px;
-  font-size: 12px;
+  padding: 4px 12px;
+  font-size: 14px;
   font-weight: 800;
   letter-spacing: 1.2px;
 }
@@ -362,12 +362,12 @@ h3 {
 .detail-head {
   display: flex;
   align-items: center;
-  gap: 22px;
+  gap: 24px;
   flex-wrap: wrap;
   background: var(--panel);
   border: 1px solid var(--line);
   border-radius: var(--radius);
-  padding: 18px 22px;
+  padding: 20px 24px;
 }
 
 .detail-head > div:first-child {
@@ -376,14 +376,14 @@ h3 {
 
 .crumbs {
   margin: 0;
-  font-size: 13px;
+  font-size: 14px;
   color: var(--muted);
 }
 
 .hint {
   margin: 0;
   color: var(--muted);
-  font-size: 13px;
+  font-size: 14px;
 }
 
 .actions {
@@ -392,11 +392,25 @@ h3 {
 }
 
 .graph-wrap {
-  position: relative;
+  /* Sized by the layout, never by the graph: the inner canvas carries the
+     computed width so a wide graph scrolls here instead of moving the page. */
+  max-width: 100%;
+  max-height: 70vh;
   overflow: auto;
   background: var(--panel);
   border: 1px solid var(--line);
   border-radius: var(--radius);
+}
+
+.graph-canvas {
+  position: relative;
+}
+
+.graph-empty {
+  margin: 0;
+  padding: 28px;
+  color: var(--muted);
+  text-align: center;
 }
 
 .graph-svg {
@@ -411,7 +425,7 @@ h3 {
   border-radius: 8px;
   color: var(--text);
   text-align: left;
-  padding: 10px 12px;
+  padding: 12px 12px;
   cursor: pointer;
   display: flex;
   flex-direction: column;
@@ -427,7 +441,7 @@ h3 {
 
 .g-node-label {
   font-weight: 600;
-  font-size: 13px;
+  font-size: 14px;
   line-height: 1.25;
   display: -webkit-box;
   -webkit-line-clamp: 2;
@@ -436,13 +450,13 @@ h3 {
 }
 
 .g-node-type {
-  font-size: 11px;
+  font-size: 14px;
   color: var(--muted);
   text-transform: uppercase;
   letter-spacing: 0.8px;
   display: flex;
   align-items: center;
-  gap: 6px;
+  gap: 8px;
 }
 
 .dot {
@@ -475,13 +489,13 @@ h3 {
 .evidence-panel dl {
   display: grid;
   grid-template-columns: 110px 1fr;
-  gap: 6px 14px;
-  margin: 10px 0 0;
+  gap: 8px 16px;
+  margin: 12px 0 0;
 }
 
 .evidence-panel dt {
   color: var(--muted);
-  font-size: 12px;
+  font-size: 14px;
   text-transform: uppercase;
   letter-spacing: 0.8px;
 }
@@ -500,7 +514,7 @@ h3 {
   background: var(--panel);
   border: 1px solid var(--line);
   border-radius: var(--radius);
-  padding: 14px 18px;
+  padding: 16px 20px;
 }
 
 .banner-flip {
@@ -520,14 +534,14 @@ h3 {
 .scenario-list {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
-  gap: 14px;
+  gap: 16px;
 }
 
 .scenario {
   background: var(--panel);
   border: 1px solid var(--line);
   border-radius: var(--radius);
-  padding: 14px 16px;
+  padding: 16px 16px;
 }
 
 .scenario-flip {
@@ -551,7 +565,7 @@ h3 {
 }
 
 .scenario p {
-  font-size: 12px;
+  font-size: 14px;
 }
 
 .table {
@@ -566,16 +580,16 @@ h3 {
 .table th,
 .table td {
   text-align: left;
-  padding: 10px 14px;
+  padding: 12px 16px;
   border-bottom: 1px solid var(--line);
-  font-size: 13px;
+  font-size: 14px;
 }
 
 .table th {
   color: var(--muted);
   text-transform: uppercase;
   letter-spacing: 0.8px;
-  font-size: 11px;
+  font-size: 14px;
 }
 
 .table tr:last-child td {
@@ -606,7 +620,7 @@ h3 {
   width: 16px;
   height: 16px;
   border-radius: 50%;
-  margin-top: 22px;
+  margin-top: 24px;
   flex: none;
   z-index: 1;
 }
@@ -622,15 +636,15 @@ h3 {
   flex: 1;
   display: flex;
   flex-direction: column;
-  gap: 10px;
-  padding-bottom: 18px;
+  gap: 12px;
+  padding-bottom: 20px;
 }
 
 .tl-events {
   display: flex;
   flex-direction: column;
-  gap: 6px;
-  margin-top: 14px;
+  gap: 8px;
+  margin-top: 16px;
 }
 
 .tl-event {
@@ -638,25 +652,25 @@ h3 {
   border: 1px solid rgba(242, 179, 26, 0.35);
   border-radius: 8px;
   padding: 8px 12px;
-  font-size: 13px;
+  font-size: 14px;
 }
 
 .tl-event-tag {
   display: inline-block;
-  font-size: 10px;
+  font-size: 14px;
   font-weight: 800;
   letter-spacing: 1px;
   color: var(--gold);
   background: rgba(242, 179, 26, 0.14);
   border-radius: 999px;
-  padding: 1px 8px;
+  padding: 4px 8px;
   margin-right: 8px;
 }
 
 .tl-event-arrow {
   color: var(--gold);
   text-align: center;
-  font-size: 12px;
+  font-size: 14px;
   line-height: 1;
 }
 
@@ -664,10 +678,10 @@ h3 {
   background: var(--panel);
   border: 1px solid var(--line);
   border-radius: var(--radius);
-  padding: 14px 16px;
+  padding: 16px 16px;
   display: flex;
   flex-direction: column;
-  gap: 6px;
+  gap: 8px;
 }
 
 .tl-card-current {
@@ -678,7 +692,7 @@ h3 {
 .tl-card-head {
   display: flex;
   align-items: center;
-  gap: 10px;
+  gap: 12px;
 }
 
 .tl-score {
@@ -689,7 +703,7 @@ h3 {
 .tl-date {
   margin-left: auto;
   color: var(--muted);
-  font-size: 13px;
+  font-size: 14px;
 }
 
 .tl-card h3 {
@@ -697,10 +711,137 @@ h3 {
 }
 
 .tl-card p {
-  font-size: 13px;
+  font-size: 14px;
 }
 
 .id-hint {
-  font-size: 11px;
+  font-size: 14px;
   font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+}
+
+.card {
+  cursor: pointer;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.card:hover {
+  border-color: var(--gold);
+  box-shadow: 0 4px 24px rgba(0, 0, 0, 0.2);
+}
+
+.btn:focus-visible {
+  outline: 2px solid var(--gold);
+  outline-offset: 2px;
+}
+
+.btn:hover {
+  background: var(--line);
+}
+
+.btn-primary:hover {
+  background: #e0a317;
+}
+
+.scenario {
+  cursor: pointer;
+  transition: border-color 0.2s ease;
+}
+
+.scenario:hover {
+  border-color: var(--gold);
+}
+
+.g-node:focus-visible {
+  outline: 2px solid var(--gold);
+  outline-offset: 2px;
+}
+
+.tl-card {
+  cursor: pointer;
+  transition: border-color 0.2s ease;
+}
+
+.tl-card:hover {
+  border-color: var(--gold);
+}
+
+.evaluate-form input:focus {
+  outline: none;
+  border-color: var(--gold);
+  box-shadow: 0 0 0 3px rgba(242, 179, 26, 0.15);
+}
+
+@media (max-width: 768px) {
+  .content {
+    padding: 16px;
+  }
+
+  .topbar {
+    padding: 12px 16px;
+    flex-wrap: wrap;
+  }
+
+  .brand {
+    font-size: 18px;
+  }
+
+  .hero h1 {
+    font-size: 24px;
+  }
+
+  .grid {
+    grid-template-columns: 1fr;
+    gap: 16px;
+  }
+
+  .scenario-list {
+    grid-template-columns: 1fr;
+  }
+
+  .detail-head {
+    padding: 16px;
+    gap: 16px;
+  }
+
+  .card {
+    padding: 16px;
+  }
+
+  .evaluate-form {
+    flex-direction: column;
+  }
+
+  .tl-step {
+    gap: 12px;
+  }
+}
+
+@media (max-width: 375px) {
+  .content {
+    padding: 12px;
+  }
+
+  .brand {
+    font-size: 16px;
+    letter-spacing: 2px;
+  }
+
+  h1 {
+    font-size: 22px;
+  }
+
+  .hero h1 {
+    font-size: 20px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
 }
