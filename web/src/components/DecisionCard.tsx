@@ -8,10 +8,14 @@ export default function DecisionCard({
   record,
   onWatch,
   watchBusy,
+  anyWatchBusy,
 }: {
   record: DecisionRecord;
   onWatch: (id: string) => void;
+  /** This card's watch is the one in flight. */
   watchBusy: boolean;
+  /** Some card's watch is in flight; only one runs at a time. */
+  anyWatchBusy: boolean;
 }) {
   const id = record.decision_id;
   return (
@@ -41,7 +45,10 @@ export default function DecisionCard({
         </Link>
         <button
           className="btn btn-primary"
-          disabled={watchBusy}
+          // Disabled for every card, not just the busy one: the handler already
+          // refuses concurrent watches, so leaving the others enabled only
+          // offered clicks that silently did nothing.
+          disabled={anyWatchBusy}
           onClick={() => onWatch(id)}
         >
           {watchBusy ? "Checking…" : "Watch"}

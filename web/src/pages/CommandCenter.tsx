@@ -111,6 +111,7 @@ export default function CommandCenter() {
                 record={d}
                 onWatch={watch}
                 watchBusy={watchBusyId === d.decision_id}
+                anyWatchBusy={watchBusyId !== null}
               />
             ))}
           </div>
